@@ -104,21 +104,16 @@ class LoginPage extends StatelessWidget {
     var jsonResponse = json.decode(response.body);
     if (jsonResponse.containsKey('access') && jsonResponse.containsKey('refresh')) {
       // Handle the response, such as storing the tokens or navigating to another screen
-      print('Access Token: ${jsonResponse['access']}');
-      print('Refresh Token: ${jsonResponse['refresh']}');
       await storage.write(key: 'accessToken', value: jsonResponse['access']);
       await storage.write(key: 'refreshToken', value: jsonResponse['refresh']);
 
       showLoggedInToast();
       navigateToHomePage(context);
     } else {
-      // Handle the error
-      print('Invalid response format');
+      showErrorToast();
     }
   } else {
     showErrorToast();
-    // Handle HTTP errors
-    print('Request failed with status: ${response.statusCode}.');
   }
 }
   
@@ -160,6 +155,7 @@ class LoginPage extends StatelessWidget {
       borderSide: BorderSide(color: Colors.white.withOpacity(0.7)),
     ),
   );
+
 
   @override
   Widget build(BuildContext context) {

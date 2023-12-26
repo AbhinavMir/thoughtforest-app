@@ -38,6 +38,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   speech_to_text: ^6.4.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,7 @@ flutter:
   assets:
     - lib/images/logo.png
     - lib/images/login-background.png
+    - lib/images/login_light.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

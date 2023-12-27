@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'profile.dart';
 
 class Note {
   final String date;
@@ -20,6 +21,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Note> notes = [];
   final storage = new FlutterSecureStorage();
+  
+  int _currentIndex = 0;
+
+  final List<Widget> _children = [
+    Text('Home'),
+    Text('Insights'),
+    UserDetailsPage(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -71,19 +86,21 @@ class _HomePageState extends State<HomePage> {
         child: CupertinoApp(
           home: CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
-              items: const <BottomNavigationBarItem>[
+              onTap: onTabTapped,
+              currentIndex: _currentIndex,
+              items: [
                 BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.graph_circle),
+                  icon: Icon(CupertinoIcons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.chart_bar),
                   label: 'Insights',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.book),
-                  label: 'Notes',
+                  icon: Icon(CupertinoIcons.person),
+                  label: 'Profile',
                 ),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.person), label: 'Profile'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.add), label: 'Add'),
               ],
             ),
             tabBuilder: (BuildContext context, int index) {
@@ -110,9 +127,19 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     case 1:
-                      // Return the widget for the second tab
-                      break;
-                    // Add more cases for more tabs
+                      return CupertinoPageScaffold(
+                        navigationBar: CupertinoNavigationBar(
+                          middle: Text('Insights'),
+                        ),
+                        child: SafeArea(
+                          child: Center(
+                            child: Text('Insights'),
+                          ),
+                        ),
+                      );
+
+                    case 2:
+                      return UserDetailsPage();
                   }
                   return Container();
                 },

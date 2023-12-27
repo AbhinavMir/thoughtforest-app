@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'home_page.dart'; // Import home page component
 import 'package:flutter/material.dart';
+import 'profile.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});

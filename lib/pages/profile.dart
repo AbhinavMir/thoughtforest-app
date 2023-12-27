@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/material.dart';
 
 class UserDetailsPage extends StatefulWidget {
   @override
@@ -35,30 +36,46 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
       throw Exception('Failed to load user details');
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('User Details'),
-      ),
-      child: userDetails == null
-          ? CupertinoActivityIndicator()
-          : SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+@override
+Widget build(BuildContext context) {
+  return CupertinoPageScaffold(
+    navigationBar: CupertinoNavigationBar(
+      middle: Text('User Details'),
+    ),
+    child: userDetails == null
+        ? Center(child: CircularProgressIndicator())
+        : SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 5,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('ID: ${userDetails?['id']}'),
-                    Text('Email: ${userDetails?['email']}'),
-                    Text('Name: ${userDetails?['name']}'),
-                    Text('Email Verified: ${userDetails?['is_email_verified']}'),
-                    Text('Subscription Active: ${userDetails?['is_subscription_active']}'),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      subtitle: Text('Email'),
+                      title: Text('${userDetails?['email']}'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.person),
+                      subtitle: Text('Name'),
+                      title: Text('${userDetails?['name']}'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.verified_user),
+                      title: Text('Email Verified'),
+                      subtitle: Text('${userDetails?['is_email_verified']}'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.subscriptions),
+                      subtitle: Text('Subscription Active'),
+                      title: Text('${userDetails?['is_subscription_active']}'),
+                    ),
                   ],
                 ),
               ),
             ),
-    );
-  }
+          ),
+  );
+}
 }

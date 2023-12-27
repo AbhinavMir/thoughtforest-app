@@ -5,13 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'profile.dart';
-
-class Note {
-  final String date;
-  final String transcript;
-
-  Note({required this.date, required this.transcript});
-}
+import 'notes.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Note> notes = [];
   final storage = new FlutterSecureStorage();
-  
+
   int _currentIndex = 0;
 
   final List<Widget> _children = [
@@ -101,6 +95,10 @@ class _HomePageState extends State<HomePage> {
                   icon: Icon(CupertinoIcons.person),
                   label: 'Profile',
                 ),
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.add_circled),
+                  label: 'New Note',
+                ),
               ],
             ),
             tabBuilder: (BuildContext context, int index) {
@@ -108,35 +106,9 @@ class _HomePageState extends State<HomePage> {
                 builder: (BuildContext context) {
                   switch (index) {
                     case 0:
-                      return CupertinoPageScaffold(
-                        navigationBar: CupertinoNavigationBar(
-                          middle: Text('Home Page'),
-                        ),
-                        child: SafeArea(
-                          child: ListView.builder(
-                            itemCount: notes.length,
-                            itemBuilder: (context, index) {
-                              return Card(
-                                child: ListTile(
-                                  title: Text(notes[index].transcript),
-                                  subtitle: Text(notes[index].date),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
+                      return NotesList(notes: notes); // Updated line
                     case 1:
-                      return CupertinoPageScaffold(
-                        navigationBar: CupertinoNavigationBar(
-                          middle: Text('Insights'),
-                        ),
-                        child: SafeArea(
-                          child: Center(
-                            child: Text('Insights'),
-                          ),
-                        ),
-                      );
+                      return Text('Iansights');
 
                     case 2:
                       return UserDetailsPage();

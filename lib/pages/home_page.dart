@@ -6,6 +6,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'profile.dart';
 import 'notes.dart';
+import 'insights.dart';
+import 'insightDetails.dart';
+import 'new_note.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -108,10 +111,35 @@ class _HomePageState extends State<HomePage> {
                     case 0:
                       return NotesList(notes: notes); // Updated line
                     case 1:
-                      return Text('Iansights');
+                      return FutureBuilder<List<Summary>>(
+                        future: fetchSummaries(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Summary>> snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InsightCard(
+                                    summary: snapshot.data![index]);
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Failed to load insights'));
+                          }
+                          return Center(child: CupertinoActivityIndicator());
+                        },
+                      );
 
                     case 2:
                       return UserDetailsPage();
+                    case 3:
+                      return NewNotePage(
+                        onNoteAdded: () => setState(() {
+                          _currentIndex =
+                              0; // Set the index to 0 when a note is added
+                        }),
+                      );
                   }
                   return Container();
                 },

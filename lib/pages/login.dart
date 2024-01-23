@@ -94,7 +94,7 @@ class LoginPage extends StatelessWidget {
 
   showLogInToast();
 
-  var url = Uri.parse('https://vrec.onrender.com/token/');
+  var url = Uri.parse('https://vrec.onrender.com/api/login/');
   var response = await http.post(url, body: {
     'email': email,
     'password': password,
@@ -103,15 +103,30 @@ class LoginPage extends StatelessWidget {
   if (response.statusCode == 200) {
 
     var jsonResponse = json.decode(response.body);
-    if (jsonResponse.containsKey('access') && jsonResponse.containsKey('refresh')) {
+    if (jsonResponse.containsKey('access_token')) {
       // Handle the response, such as storing the tokens or navigating to another screen
-      await storage.write(key: 'accessToken', value: jsonResponse['access']);
-      await storage.write(key: 'refreshToken', value: jsonResponse['refresh']);
+
+      /*
+      {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAzNzU1MjQ2LCJpYXQiOjE3MDM3NTQ2NDYsImp0aSI6IjNjMmQ1ZDdkNmNlZTRkZDdhNjZjZTA5ODRiODczOWI1IiwidXNlcl9pZCI6MTh9.uTlt2cE-Db9PFm4FK4vh2rJp4PkAm5YgY8Kmwq5IiHs",
+    "user": {
+        "id": 18,
+        "email": "atg271@gmail.com",
+        "name": "Rabbit"
+    }
+}
+      */
+      await storage.write(key: 'accessToken', value: jsonResponse['access_token']);
+      await storage.write(key: 'thoughtforest_userid', value: jsonResponse['user']['id'].toString());
+      await storage.write(key: 'thoughtforest_name', value: jsonResponse['user']['name']);
+      await storage.write(key: 'thoughtforest_email', value: jsonResponse['user']['email']);
+      await storage.write(key: 'thoughtforest_loggedin', value: 'true');
 
       showLoggedInToast();
       navigateToHomePage(context);
     } else {
       showErrorToast();
+      print(jsonResponse);
     }
   } else {
     showErrorToast();

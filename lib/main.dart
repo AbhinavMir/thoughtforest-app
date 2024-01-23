@@ -4,8 +4,27 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/login.dart';
 import 'pages/home_page.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+      child: MyApp(),
+    ),
+  );
+}
+
+class ThemeNotifier with ChangeNotifier {
+  bool _darkTheme = false;
+
+  bool get darkTheme => _darkTheme;
+
+  void toggleTheme() {
+    _darkTheme = !_darkTheme;
+    notifyListeners();
+  }
+}
 
 class MyApp extends StatefulWidget {
   @override

@@ -1,40 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Bottom Nav Example'),
+    return CupertinoApp(
+      theme: CupertinoThemeData(
+        brightness: Brightness.dark, // This will make your background dark
+        barBackgroundColor: CupertinoColors
+            .darkBackgroundGray, // This will make your AppBar dark
+      ),
+      home: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('Bottom Nav Example'),
+          backgroundColor: CupertinoColors.darkBackgroundGray,
         ),
-        body: Center(
+        child: Center(
           child: Text('Content goes here'),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: Icon(Icons.bar_chart),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(Icons.mic),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(Icons.note),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.mic),
         ),
       ),
     );

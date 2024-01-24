@@ -1,14 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("User Details"),
+    return CupertinoApp(
+      theme: CupertinoThemeData(
+        brightness: Brightness.dark, // This will make your background dark
+        barBackgroundColor: CupertinoColors
+            .darkBackgroundGray, // This will make your AppBar dark
       ),
-      body: Center(
-        child: Text("User Details"),
+      home: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text("User Details"),
+          backgroundColor: CupertinoColors.darkBackgroundGray,
+        ),
+        child: Center(
+          child: Container(
+            color: CupertinoColors.darkBackgroundGray,
+            child: Text("User Details"),
+          ),
+        ),
       ),
     );
   }

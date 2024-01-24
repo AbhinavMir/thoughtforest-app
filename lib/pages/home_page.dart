@@ -85,6 +85,7 @@ class _HomePageState extends State<HomePage> {
             tabBar: CupertinoTabBar(
               onTap: onTabTapped,
               currentIndex: _currentIndex,
+              backgroundColor: CupertinoColors.black,
               items: [
                 BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.home),
@@ -107,11 +108,13 @@ class _HomePageState extends State<HomePage> {
             tabBuilder: (BuildContext context, int index) {
               return CupertinoTabView(
                 builder: (BuildContext context) {
+                  Widget child;
                   switch (index) {
                     case 0:
-                      return NotesList(notes: notes); // Updated line
+                      child = NotesList(notes: notes); // Updated line
+                      break;
                     case 1:
-                      return FutureBuilder<List<Summary>>(
+                      child = FutureBuilder<List<Summary>>(
                         future: fetchSummaries(),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Summary>> snapshot) {
@@ -130,18 +133,25 @@ class _HomePageState extends State<HomePage> {
                           return Center(child: CupertinoActivityIndicator());
                         },
                       );
-
+                      break;
                     case 2:
-                      return UserDetailsPage();
+                      child = UserDetailsPage();
+                      break;
                     case 3:
-                      return NewNotePage(
+                      child = NewNotePage(
                         onNoteAdded: () => setState(() {
                           _currentIndex =
                               0; // Set the index to 0 when a note is added
                         }),
                       );
+                      break;
+                    default:
+                      child = Container();
                   }
-                  return Container();
+                  return Container(
+                    color: CupertinoColors.darkBackgroundGray,
+                    child: child,
+                  );
                 },
               );
             },
